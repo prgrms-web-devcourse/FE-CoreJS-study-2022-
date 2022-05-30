@@ -34,7 +34,7 @@ console.log(this.a); // 1
 
 전역 객체의 프로퍼티에 할당하는 것이 `var`로 선언한 것과 같게 동작하지만
 
-삭제 명령에서는 다르게 동작한다.
+**삭제 명령에서는 다르게 동작한다.**
 
 ```javascript
 var a = 1;
@@ -50,7 +50,7 @@ console.log(b, window.b, this.b); // ReferenceError: b is not defined
 
 처음부터 전역객체의 프로퍼티로 할당한 경우에는 삭제가 되지만
 
-전역 변수로 선언한 경우에는 삭제가 되지 않는다.
+전역 변수로 선언한 경우에는 삭제가 되지 않는다는 차이점이 있다.
 
 <br>
 
@@ -58,7 +58,7 @@ console.log(b, window.b, this.b); // ReferenceError: b is not defined
 
 함수는 전역에 선언된 일반 함수와 객체 안의 메소드로 크게 구분할 수 있다.
 
-**함수로써 호출할 경우 this는 전역 객체**를 가리킨다.
+**일반 함수로써 호출할 경우 this는 전역 객체**를 가리킨다.
 
 객체의 **메서드로서 호출할 경우 this는 호출한 메서드 앞의 객체**를 가리킨다.
 
@@ -209,8 +209,9 @@ obj.method.call(test, 2, 3); // 200 2 3
 
 ### 2. apply 메서드
 
-`call`과는 기능적으로는 동일하지만 두 번째 인자를 배열로 받고 그 배열의 요소들을
-호출할 함수의 매개변수로 지정한다는 점에 차이가 있다.
+`call`과는 기능적으로는 동일하지만 `apply`메서드는 두 번째 인자를 배열로 받고
+
+그 배열의 요소들을 호출할 함수의 매개변수로 지정한다는 점에 차이가 있다.
 
 ```javascript
 var obj = {
@@ -250,6 +251,7 @@ bindFunc2(); // 200 4 5
 ```
 
 `bind` 메서드를 적용해서 만든 함수의 name 프로퍼티에는 bound라는 접두어가 붙는다.
+
 이를 통해 원본과 `bind`로 변경한 함수를 구분할 수 있다.
 
 ```javascript
@@ -353,8 +355,9 @@ obj.outer();
 
 ES6에서 함수 내부의 this가 전역 객체를 바라보는 문제점을 보완하기 위해 새로 도입되었다.
 
-화살표 함수는 실행 컨텍스트를 생성할 때 this 바인딩 과정 자체가 빠지게 되어
-상위 스코프의 this를 그대로 활용할 수 있다. (스코프 체인상 가장 가까운 this)
+화살표 함수는 실행 컨텍스트를 생성할 때 **this 바인딩 과정 자체가 빠지게 되어**
+
+**상위 스코프의 this를 그대로 활용**할 수 있다. (스코프 체인상 가장 가까운 this)
 
 ```javascript
 var obj = {
@@ -383,11 +386,12 @@ call, apply, bind 메서드를 사용하는 것 보다 간결하게 작성할 �
 ## 별도의 인자로 this를 받는 경우
 
 콜백 함수를 인자로 받는 메서드 중 일부는 추가로 this로 지정할 객체를
-인자로 받는 경우가 있다.
+인자로 받아서 명시적인 바인딩을 해줄 수 있다.
 
-thisArg 값을 지정하면 콜백 함수 내에서 this를 변경할 수 있다.
+**thisArg 값을 지정**하면 콜백 함수 내에서 this를 변경할 수 있다.
 
 thisArg는 보통 내부 요소에 대해 같은 동작을 반복 수행하는 배열 메서드에서 지정할 수 있으며,
+
 `Set`, `Map`에서도 지정할 수 있다.
 
 ```javascript
@@ -405,3 +409,32 @@ var obj = { name: "Hi" };
 - Set.prototype.forEach
 
 - Map.prototype.forEach
+
+## Quiz
+
+### 1. 콘솔에 출력될 결과를 맞춰보세요.
+
+```javascript
+function func() {
+  console.log(this); // ?
+}
+
+func.bind(1);
+```
+
+### 2. 콘솔에 출력될 결과를 맞춰보세요.
+
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.sayName = () => {
+    console.log(`${this.name} 입니다.`);
+  };
+}
+
+const jay = new Person("Jay", "20");
+const hoy = new Person("Hoy", "22");
+
+hoy.sayName.call(jay); /// ?
+```
