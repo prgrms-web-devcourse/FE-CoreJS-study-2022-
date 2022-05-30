@@ -15,17 +15,17 @@
 - 브라우저
 
 ```js
-console.log(this) // {alert: f(), atob: f(), blur: f(),...}
-console.log(window) // {alert: f(), atob: f(), blur: f(),...}
-console.log(this === window) //true
+console.log(this); // {alert: f(), atob: f(), blur: f(),...}
+console.log(window); // {alert: f(), atob: f(), blur: f(),...}
+console.log(this === window); //true
 ```
 
 - Node.js
 
 ```js
-console.log(this) // {alert: f(), atob: f(), blur: f(),...}
-console.log(global) // {alert: f(), atob: f(), blur: f(),...}
-console.log(this === global) //true
+console.log(this); // {alert: f(), atob: f(), blur: f(),...}
+console.log(global); // {alert: f(), atob: f(), blur: f(),...}
+console.log(this === global); //true
 ```
 
 ## 전역공간, this를 통해 변수에 접근하기
@@ -33,26 +33,26 @@ console.log(this === global) //true
 만약 전역 공간에 변수 a로 1를 할당하고 아래 코드를 실행하면 브라우저의 콘솔에는 어떤 값이 찍힐까요?
 
 ```js
-var a = 1
-console.log(a)
-console.log(window.a)
-console.log(this.a)
+var a = 1;
+console.log(a);
+console.log(window.a);
+console.log(this.a);
 ```
 
 답은 모두 1입니다. 여기서 의문이 생길 수도 있습니다. a를 전역 객체에 등록한 게 아닌데 어째서 전역객체의 프로퍼티로 인식을 하는 걸까하고요. 이는 전역변수를 선언할 때 자바스크립트 엔진이 전역변수를 전역객체의 프로퍼티로 할당하고 있기 때문입니다. a앞에 window.을 생략했다고 볼 수 있습니다. 따라서 대부분의 경우 window의 프로퍼티에 값을 직접 할당하면 다음과 같이 전역변수의 값도 해당 값으로 변합니다.
 
 ```js
-var a = 1
-window.b = 2
+var a = 1;
+window.b = 2;
 
-console.log(a, window.a, this.a) // 1 1 1
-console.log(b, window.b, this.b) // 2 2 2
+console.log(a, window.a, this.a); // 1 1 1
+console.log(b, window.b, this.b); // 2 2 2
 
-window.a = 3
-b = 4
+window.a = 3;
+b = 4;
 
-console.log(a, window.a, this.a) // 3 3 3
-console.log(b, window.b, this.b) // 4 4 4
+console.log(a, window.a, this.a); // 3 3 3
+console.log(b, window.b, this.b); // 4 4 4
 ```
 
 ### 예외: 삭제명령
@@ -62,17 +62,17 @@ console.log(b, window.b, this.b) // 4 4 4
 하지만 삭제 명령의 경우 결과가 다릅니다. 변수로 선언된 경우엔 값이 삭제가 되지 않고, 객체 프로퍼티로 할당한 경우엔 삭제가 됩니다.
 
 ```js
-var a = 1
-delete window.a // false
-console.log(a, window.a, this.a) // 1 1 1
+var a = 1;
+delete window.a; // false
+console.log(a, window.a, this.a); // 1 1 1
 
-var b = 2
-delete b // false
-console.log(b, window.b, this.b) // 2 2 2
+var b = 2;
+delete b; // false
+console.log(b, window.b, this.b); // 2 2 2
 
-window.c = 3
-delete window.c // true
-console.log(c, window.c, this.c) // Uncaught ReferenceError: c is not defined
+window.c = 3;
+delete window.c; // true
+console.log(c, window.c, this.c); // Uncaught ReferenceError: c is not defined
 ```
 
 이는 전역변수 선언시 자바스크립트 엔진이 해당 프로퍼티의 configurable(변경, 삭제 가능성)값을 false로 정의해서 의도치 않은 변수 삭제를 막고있기 때문입니다.
@@ -91,9 +91,9 @@ console.log(c, window.c, this.c) // Uncaught ReferenceError: c is not defined
 
 ```js
 var func = function (x) {
-  console.log(this, x) // window{...} 1
-}
-func(1)
+  console.log(this, x); // window{...} 1
+};
+func(1);
 ```
 
 독립적으로 호출이 가능한 상태일 때 우리는 함수를 메소드가 아닌 함수라고 하는데 이 때 호출 주체를 명시하지 않고 실행한 거라서 실행컨텍스트의 this엔 전역객체가 바인딩됩니다.
@@ -106,15 +106,15 @@ func(1)
 
 ```js
 var func = function (x) {
-  console.log(this, x) //{method: f} 1
-}
-func(1)
+  console.log(this, x); //{method: f} 1
+};
+func(1);
 
 var obj = {
   method: func,
-}
+};
 
-obj.method(1)
+obj.method(1);
 ```
 
 그리고 이땐 this는 전역객체가 아니라 메서드가 속한 객체입니다. 그래서 console엔 아까와 달리 {method: f} 1가 출력됩니다.
@@ -128,17 +128,17 @@ obj.method(1)
 ```js
 var obj = {
   method1: function () {
-    console.log(this)
+    console.log(this);
   },
   inner: {
     method2: function () {
-      console.log(this)
+      console.log(this);
     },
   },
-}
+};
 
-obj.method1() // {method1: f , inner:{...}}
-obj.inner.method2() //{method2: f}
+obj.method1(); // {method1: f , inner:{...}}
+obj.inner.method2(); //{method2: f}
 ```
 
 두 메서드 모두 this를 출력하는 데 메서드1의 this는 obj, 메서드2의 this는 inner 객체입니다. 즉, 메서드가 호출할 떄 의존하는 객체(.앞에 명시된 객체)가 this입니다.
@@ -152,21 +152,21 @@ obj.inner.method2() //{method2: f}
 ```js
 var obj = {
   method: function () {
-    console.log(this)
+    console.log(this);
 
     var func = function () {
-      console.log(this)
-    }
-    func()
+      console.log(this);
+    };
+    func();
 
     var obj2 = {
       method2: func,
-    }
-    obj2.method2()
+    };
+    obj2.method2();
   },
-}
+};
 
-obj.method()
+obj.method();
 ```
 
 1. obj에 값이 할당된 후 obj.method로 객체의 메서드가 호출되면 실행컨텍스트가 만들어집니다.
@@ -190,21 +190,21 @@ obj.method()
 ```js
 var obj = {
   method: function () {
-    console.log(this) //obj
+    console.log(this); //obj
 
     var func = function () {
-      console.log(this) //window
-    }
-    func()
+      console.log(this); //window
+    };
+    func();
 
     var obj2 = {
       method2: func,
-    }
-    obj2.method2() //obj2
+    };
+    obj2.method2(); //obj2
   },
-}
+};
 
-obj.method()
+obj.method();
 ```
 
 ### 2.2.3 내부 함수에 우회값 사용
@@ -216,18 +216,18 @@ obj.method()
 ```js
 var obj = {
   method: function () {
-    console.log(this) //obj
+    console.log(this); //obj
 
-    var self = this
+    var self = this;
 
     var func = function () {
-      console.log(self) //obj
-    }
-    func()
+      console.log(self); //obj
+    };
+    func();
   },
-}
+};
 
-obj.method()
+obj.method();
 ```
 
 _this,that,_ 등의 변수명을 사용하는데 제일 자주 쓰이는 변수명은 self입니다.
@@ -250,11 +250,11 @@ call은 첫 번째 인자를 this에 바인딩하고 그다음 인자들은 함�
 
 ```js
 var func = function (a, b) {
-  console.log(this, a, b)
-}
+  console.log(this, a, b);
+};
 
-func(1, 2) // window 1 2
-func.call({ x: 1 }, 1, 2) // {x:1} 1 2
+func(1, 2); // window 1 2
+func.call({ x: 1 }, 1, 2); // {x:1} 1 2
 ```
 
 함수를 그냥 호출하면 호출 주체가 없기 때문에 실행컨텍스트 환경 정보의 this엔 전역객체가 바인딩 됩니다. 반면 함수.call로 함수를 호출한 경우, this로 지정할 {x:1} 임의의 객체를 첫 번째 인자로 받기 때문에 전과 달리 this값이 {x:1}로 출력되는 걸 볼 수 있습니다.
@@ -265,14 +265,14 @@ func.call({ x: 1 }, 1, 2) // {x:1} 1 2
 
 ```js
 var obj = {
-  0: 'a',
-  1: 'b',
+  0: "a",
+  1: "b",
   length: 2,
-}
+};
 
-Array.prototype.push.call(obj, 'c') // 'c'를 다음 인덱스에 push
+Array.prototype.push.call(obj, "c"); // 'c'를 다음 인덱스에 push
 
-Array.prototype.slice.call(obj) // 얕은 복사  === Array.from(obj)
+Array.prototype.slice.call(obj); // 얕은 복사  === Array.from(obj)
 ```
 
 배열은 사실 키가 숫자인 객체의 형태고 length라는 프로퍼티와 메서드가 존재합니다. 따라서 obj를 call로 배열 프로토타입의 this로 지정해주면 배열처럼 메서드 사용이 가능합다.
@@ -291,19 +291,19 @@ slice 메서드는 배열을 잘라내는 게 본래 목적입니다. 그러므�
 문자열의 경우도 배열처럼 인덱스와 length 프로퍼티를 갖고 있기 때문에 call을 통해 배열의 메서드를 사용할 수 있습니다. 다만, 문자열은 length 프로퍼티가 읽기 전용이라 원본을 변경하는 (push,pop,shift,unshift,splice,...) 메서드는 에러를 던지고 concat처럼 대상이 반드시 배열인 경우는 제대로 된 결과를 얻을 수 없습니다.
 
 ```js
-var str = 'ab cd'
+var str = "ab cd";
 
-Array.prototype.push.call(str, ' ef') // 에러
-Array.prototype.concat.call(str, ' ef') // [String {'ab cd'}, ' ef']
+Array.prototype.push.call(str, " ef"); // 에러
+Array.prototype.concat.call(str, " ef"); // [String {'ab cd'}, ' ef']
 Array.prototype.every.call(str, function (char) {
-  char !== ' '
-}) // false ' '이 한 번 존재함
+  char !== " ";
+}); // false ' '이 한 번 존재함
 Array.prototype.some.call(str, function (char) {
-  char === ' '
-}) // true ' '이 한 번 존재함
+  char === " ";
+}); // true ' '이 한 번 존재함
 var newArr = Array.prototype.map.call(str, function (char) {
-  return char + '/'
-}) // ['a/','b/',' /','c/','d/']
+  return char + "/";
+}); // ['a/','b/',' /','c/','d/']
 ```
 
 > arguments, nodeList도 유사배열 객체
@@ -322,41 +322,41 @@ apply 역시 call 처럼 첫 번째 인자를 함수의 this로 바인딩하고 
 
 ```js
 var func = function (a, b) {
-  console.log(this, a, b)
-}
+  console.log(this, a, b);
+};
 
-func(1, 2)
-func.apply({ x: 1 }, [1, 2])
+func(1, 2);
+func.apply({ x: 1 }, [1, 2]);
 ```
 
 이처럼 배열로 인자를 넘겨줄 수 있다보니 함수의 매개변수가 여러개인 경우엔 apply를 사용하면 좋습니다. 위에 언급한 call의 활용 사례의 경우 매개변수가 하나라 call을 썼지만 다음의 경우엔 apply를 써봅니다.
 
 ```js
 const fn = (a, b, c, d) => {
-  console.log(a, b, c, d)
-}
+  console.log(a, b, c, d);
+};
 
 const debounde = function (fn, delay) {
-  let timer = null
+  let timer = null;
   if (timer) {
-    clearTimeOut(timer)
+    clearTimeOut(timer);
   }
   return function () {
-    const context = this
-    const args = arguments // 넘기는 매개변수 [a,b,c,d]배열
+    const context = this;
+    const args = arguments; // 넘기는 매개변수 [a,b,c,d]배열
 
-    clearTimeout(timer)
+    clearTimeout(timer);
 
-    timer = setTimeout(fn.apply(context, args), delay)
-  }
-}
-var str = 'abc'
+    timer = setTimeout(fn.apply(context, args), delay);
+  };
+};
+var str = "abc";
 var newArr = Array.prototype.reduce.apply(str, [
   function (acc, char, i) {
-    return acc + char + i
+    return acc + char + i;
   },
-  '',
-])
+  "",
+]);
 ```
 
 첫 번째는 디바운스 걸 함수 fn의 매개변수가 여러개일 때 arguments 유사배열 객체에 담긴 값들을 fn 함수에 한번에 넘기는 모습입니다. 두번째는 reduce 함수의 매개변수가 2개라 2개 값을 배열로 넘긴 모습입니다.
@@ -371,18 +371,18 @@ bind는 두 함수들과 달리 즉시 호출을 하지 않습니다. this에 �
 
 ```js
 var func = function (a, b) {
-  console.log(this, a, b)
-}
-func(1, 2) // window 1 2
-var func2 = func.bind({ x: 1 })
-func2(1, 2) // {x:1} 1 2
+  console.log(this, a, b);
+};
+func(1, 2); // window 1 2
+var func2 = func.bind({ x: 1 });
+func2(1, 2); // {x:1} 1 2
 ```
 
 첫 번째 func(1, 2)와 두 번째 func2(1, 2)는 다른 결과를 도출합니다.
 
 ```js
-console.log(func.name) //func
-console.log(func2.name) //func2가 아니라 bound func
+console.log(func.name); //func
+console.log(func2.name); //func2가 아니라 bound func
 ```
 
 뿐만 아니라 함수의 name 프로퍼티도 각각 func, bound func로 다릅니다. 우리는 이를 통해 어떤 함수에서 bind를 썼는 지 추적할 수 있어서 apply나 call보다 원본과 변경된 함수를 구별하기 좋습니다.
@@ -394,17 +394,17 @@ self로 특정 this값을 사용하는 대신 bind로 this를 지정하면 더�
 ```js
 var obj = {
   method: function () {
-    console.log(this)
+    console.log(this);
 
     var func = function () {
-      console.log(this)
-    }.bind(this)
+      console.log(this);
+    }.bind(this);
 
-    func() // func.call(this) || func.apply(this)도 가능
+    func(); // func.call(this) || func.apply(this)도 가능
   },
-}
+};
 
-obj.method()
+obj.method();
 ```
 
 이러면 아까처럼 self에 method의 this를 담아서 사용하지 않아도 func 내부의 console.log(this)에 obj가 찍힙니다.
@@ -420,18 +420,18 @@ ES6에 새로 도입된 화살표 함수는 실행 컨텍스트 생성시 this�
 ```js
 var obj = {
   method: function () {
-    console.log(this)
+    console.log(this);
     var func = function () {
-      console.log(this)
-    }
+      console.log(this);
+    };
     var func2 = () => {
-      console.log(this)
-    }
+      console.log(this);
+    };
 
-    func() // window
-    func2() // obj
+    func(); // window
+    func2(); // obj
   },
-}
+};
 ```
 
 이러면 apply, call, bind로 this를 지정할 필요가 없어서 편리합니다.
@@ -445,17 +445,17 @@ var obj = {
 콜백함수를 인자로 받는 메서드 중 일부는 추가로 this로 지정할 객체를 인자로 받을 수 있습니다. 보통 배열 메서드에 많이 있는데 Set, Map에서도 찾아볼 수 있습니다. 대표적인 예는 다음과 같습니다.
 
 ```js
-Array.prototype.forEach(callback함수, this)
-Array.prototype.map(callback함수, this)
-Array.prototype.filter(callback함수, this)
-Array.prototype.some(callback함수, this)
-Array.prototype.every(callback함수, this)
-Array.prototype.find(callback함수, this)
-Array.prototype.findIndex(callback함수, this)
-Array.prototype.flatMap(callback함수, this)
-Array.prototype.from(유사배열객체, callback함수, this)
-Set.prototype.forEach(callback함수, this)
-Map.prototype.forEach(callback함수, this)
+Array.prototype.forEach(callback함수, this);
+Array.prototype.map(callback함수, this);
+Array.prototype.filter(callback함수, this);
+Array.prototype.some(callback함수, this);
+Array.prototype.every(callback함수, this);
+Array.prototype.find(callback함수, this);
+Array.prototype.findIndex(callback함수, this);
+Array.prototype.flatMap(callback함수, this);
+Array.prototype.from(유사배열객체, callback함수, this);
+Set.prototype.forEach(callback함수, this);
+Map.prototype.forEach(callback함수, this);
 ```
 
 <br/>
@@ -468,27 +468,27 @@ Map.prototype.forEach(callback함수, this)
 
 ```js
 var Person = function (name, age) {
-  this.name = name
-  this.age = age
-}
+  this.name = name;
+  this.age = age;
+};
 
-var young = new Person('junior', 1)
-var old = new Person('senior', 100)
+var young = new Person("junior", 1);
+var old = new Person("senior", 100);
 
-console.log(young) //{name: 'junior', age:1}
-console.log(old) //{name: 'senior', age:100}
+console.log(young); //{name: 'junior', age:1}
+console.log(old); //{name: 'senior', age:100}
 ```
 
 보시면 young 인스턴스 객체 내부의 this는 young이고, old 인스턴스 객체 내부의 this는 old입니다. 그리고 해당 생성자 함수를 또 다른 생성자 내부에서 new 키워드 없이 call,apply를 이용해 상속처럼 사용할 수도 있습니다.
 
 ```js
 function Student(name, age, school) {
-  Person.call(name, age)
-  this.school = school
+  Person.call(this, name, age);
+  this.school = school;
 }
 
-var student1 = new Student('hey', 20, 'university')
-console.log(student1) //{name: 'hey', age:20, school: 'university'}
+var student1 = new Student("hey", 20, "university");
+console.log(student1); //{name: 'hey', age:20, school: 'university'}
 ```
 
 <br/><br/>
@@ -499,12 +499,12 @@ console.log(student1) //{name: 'hey', age:20, school: 'university'}
 
 ```js
 var func = function (a, b) {
-  console.log(this, a, b)
-}
-var func2 = func.bind({ x: 1 })
+  console.log(this, a, b);
+};
+var func2 = func.bind({ x: 1 });
 
-console.log(func.name)
-console.log(func2.name)
+console.log(func.name);
+console.log(func2.name);
 ```
 
 2. 메서드 내부 함수의 this값은 메서드의 this값과 같다(화살표 함수가 아닌 경우) (o,x)
