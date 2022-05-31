@@ -5,8 +5,8 @@
 - 환경별 전역 객체
     - 브라우저 : window
         ```js
-        console.log(this);              // {alert: f(), atob: f(), blur: f(), ...}
-        console.log(window);            // {alert: f(), atob: f(), blur: f(), ...}
+        console.log(this);              // Window {alert: f(), atob: f(), blur: f(), ...}
+        console.log(window);            // Window {alert: f(), atob: f(), blur: f(), ...}
         console.log(this === window);   // true
         ```
     - Node.js : global
