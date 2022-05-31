@@ -126,17 +126,17 @@ console.log(myFunction()); //undefined
 - 메서드로 호출되면 호출한 객체가 this가 된다
 
 ```jsx
-var func = function(x) {
-	console.log(this.x)
+var func = function() {
+	console.log(this)
 }
 
-func(1) // Window. { ...}
+func() // window
 
 var obj = {
 	method: func
 }
 
-obj.method(2)  // {method: f }  2
+obj.method()  // {method: ƒ}
 ```
 
 ## 생성자 안에서 쓴 this
